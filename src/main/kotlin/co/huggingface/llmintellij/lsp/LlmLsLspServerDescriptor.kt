@@ -17,7 +17,7 @@ class LlmLsLspServerDescriptor(project: Project) : ProjectWideLspServerDescripto
 
     override fun createCommandLine(): GeneralCommandLine {
         val settings = LlmSettingsState.instance
-        val binaryPath = downloadLlmLs(logger, settings.lsp.binaryPath, settings.lsp.version) ?: throw Error("llm-ls binary path is not set")
+        val binaryPath = downloadLlmLs(logger, settings.lsp.releasesBaseUrl, settings.lsp.binaryPath, settings.lsp.version) ?: throw Error("llm-ls binary path is not set")
         settings.lsp.binaryPath = binaryPath
         return GeneralCommandLine().apply {
             exePath = binaryPath
@@ -75,8 +75,8 @@ fun buildBinaryName(logger: Logger): String? {
     return "llm-ls-$arch-$osSuffix"
 }
 
-fun buildUrl(binName: String, version: String): String {
-    return "https://github.com/huggingface/llm-ls/releases/download/$version/$binName.gz"
+fun buildUrl(releasesBaseUrl: String, binName: String, version: String): String {
+    return "$releasesBaseUrl/$version/$binName.gz"
 }
 
 fun downloadAndUnzip(url: String, binDir: File, binName: String, fullPath: String) {
@@ -100,7 +100,7 @@ fun runCommand(command: String) {
     process.waitFor()
 }
 
-fun downloadLlmLs(logger: Logger, binaryPath: String?, version: String): String? {
+fun downloadLlmLs(logger: Logger, releasesBaseUrlSetting: String?, binaryPath: String?, version: String): String? {
     if (binaryPath != null && binaryPath.endsWith(version) && File(binaryPath).exists()) {
         return binaryPath
     }
@@ -113,7 +113,8 @@ fun downloadLlmLs(logger: Logger, binaryPath: String?, version: String): String?
     val fullPath = File(binDir, "$binName-$version")
 
     if (!fullPath.exists()) {
-        val url = buildUrl(binName, version)
+        val releasesBaseUrl = releasesBaseUrlSetting ?: "https://github.com/huggingface/llm-ls/releases/download"
+        val url = buildUrl(releasesBaseUrl, binName, version)
         downloadAndUnzip(url, binDir, binName, fullPath.absolutePath)
         logger.info("Successfully downloaded llm-ls")
     }
