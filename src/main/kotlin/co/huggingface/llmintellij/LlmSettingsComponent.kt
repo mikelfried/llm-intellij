@@ -44,6 +44,8 @@ class LlmSettingsComponent {
     private val lspBinaryPath: TextFieldWithBrowseButton
     private val lspVersionLabel: JBLabel
     private val lspVersion: JBTextField
+    private val lspBaseUrlLabel: JBLabel
+    private val lspBaseUrl: JBTextField
     private val lspLogLevelLabel: JBLabel
     private val lspLogLevel: JBTextField
     private val tokenizerConfig: JComboBox<String>
