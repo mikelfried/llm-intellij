@@ -44,6 +44,8 @@ class LlmSettingsComponent {
     private val lspBinaryPath: TextFieldWithBrowseButton
     private val lspVersionLabel: JBLabel
     private val lspVersion: JBTextField
+    private val lspBaseUrlLabel: JBLabel
+    private val lspBaseUrl: JBTextField
     private val lspLogLevelLabel: JBLabel
     private val lspLogLevel: JBTextField
     private val tokenizerConfig: JComboBox<String>
@@ -213,6 +215,10 @@ class LlmSettingsComponent {
         lspVersion = JBTextField("0.4.0")
         llmLsSubsectionPanel.add(lspVersionLabel)
         llmLsSubsectionPanel.add(lspVersion)
+        lspBaseUrlLabel = JBLabel("releasesBaseUrlSetting")
+        lspBaseUrl = JBTextField("")
+        llmLsSubsectionPanel.add(lspBaseUrlLabel)
+        llmLsSubsectionPanel.add(lspBaseUrl)
         lspLogLevelLabel = JBLabel("Log level")
         lspLogLevel = JBTextField("warn")
         llmLsSubsectionPanel.add(lspLogLevelLabel)
