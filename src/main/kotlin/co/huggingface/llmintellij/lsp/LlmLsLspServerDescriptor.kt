@@ -113,7 +113,7 @@ fun downloadLlmLs(logger: Logger, releasesBaseUrlSetting: String?, binaryPath: S
     val fullPath = File(binDir, "$binName-$version")
 
     if (!fullPath.exists()) {
-        val releasesBaseUrl = releasesBaseUrlSetting ?: "https://github.com/huggingface/llm-ls/releases/download"
+        val releasesBaseUrl = releasesBaseUrlSetting ?: throw Error("releasesBaseUrlSetting is not set")
         val url = buildUrl(releasesBaseUrl, binName, version)
         downloadAndUnzip(url, binDir, binName, fullPath.absolutePath)
         logger.info("Successfully downloaded llm-ls")
